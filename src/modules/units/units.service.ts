@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { PrismaService } from "prisma/prisma.service";
 
+import { PrismaService } from "prisma/prisma.service";
 import { CreateUnitInput } from "./dto/create-unit.input";
 import { UpdateUnitInput } from "./dto/update-unit.input";
 
@@ -14,6 +14,7 @@ export class UnitsService {
     });
   }
 
+	// TODO: отвязать единицы изменений от ингредиентов - они общие для всего приложения
   async findAll() {
     return this.prisma.unit.findMany({
       include: { ingredients: true },
@@ -26,29 +27,24 @@ export class UnitsService {
       include: { ingredients: true },
     });
 
-    if (!unit) {
-      throw new NotFoundException(`Unit with id ${id} not found`);
-    }
-
-    return unit;
+    if (!unit) throw new NotFoundException(`Unit with id ${id} not found`);
+    
+		return unit;
   }
 
-  async update(updateUnitInput: UpdateUnitInput) {
-    const { id, ...data } = updateUnitInput;
+	async update(id: string, updateUnitInput: UpdateUnitInput) {
+		const existing = await this.findOne(id);
 
-    await this.findOne(id); // проверка существования
+		if (!existing) throw new NotFoundException(`Unit with id ${id} not found`);
+		
+		return this.prisma.unit.update({ where: { id }, data: updateUnitInput });
+	}
 
-    return this.prisma.unit.update({
-      where: { id },
-      data,
-    });
-  }
+	async remove(id: string) {
+    const existing = await this.findOne(id);
 
-  async remove(id: string): Promise<void> {
-    await this.findOne(id); // проверка существования
-
-    await this.prisma.unit.delete({
-      where: { id },
-    });
+    if (!existing) throw new NotFoundException(`Unit with id ${id} not found`);
+    
+		return this.prisma.unit.delete({ where: { id } });
   }
 }

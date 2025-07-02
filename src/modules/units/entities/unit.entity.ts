@@ -1,6 +1,6 @@
 import { ObjectType, Field, ID } from "@nestjs/graphql";
 
-import { Ingredient } from "src/modules/ingredients/ingredients.types";
+import { Ingredient } from "@/modules/ingredients/entities/ingredient.entity";
 
 @ObjectType()
 export class Unit {
@@ -9,12 +9,6 @@ export class Unit {
 
   @Field()
   name: string;
-
-  @Field({ nullable: true })
-  createdAt?: Date;
-
-  @Field({ nullable: true })
-  updatedAt?: Date;
 
   @Field(() => [Ingredient], { nullable: true })
   ingredients?: Ingredient[];

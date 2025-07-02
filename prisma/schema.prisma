@@ -61,20 +61,22 @@ model Recipe {
   id               	String     @id @default(uuid())
   title            	String
   description      	String?    // optional
-  category_id      	String
-  category         	Category   @relation(fields: [category_id], references: [id])
   image_url        	String?    // optional
   complexity       	Int?       // optional
   preparation_time 	String?    // optional
   servings_count   	Int?       // optional
-
-  calories         	Float?     // macronutrients
+	
+	calories         	Float?     // macronutrients
   proteins         	Float?
   fats             	Float?
   carbohydrates    	Float?
-	
+
+  category_id      	String
+  category         	Category   @relation(fields: [category_id], references: [id])
+  
   user_id          	String
   user             	User       @relation(fields: [user_id], references: [id])
-  ingredients      	Ingredient[]
+  
+	ingredients      	Ingredient[]
   steps            	Step[]
 }

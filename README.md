@@ -2,23 +2,58 @@
 
 ## Описание
 
-Инструкция по установке и настройке backend для проекта **CookBook**
+Инструкция по установке и настройке backend для проекта **CookBook** - сервис для хранения и управления рецептами
 
-[Фронтенд CookBook](https://github.com/Rorrian/CookBook)
+Фронтенд репозиторий: [github.com/Rorrian/CookBook](https://github.com/Rorrian/CookBook)
 
 ## Технологии:
 * NestJS
 * GraphQL(Apollo Driver)
-* Prisma
+* Prisma (ORM)
 * TypeScript
+* PostgreSQL
 
+* OAuth
+
+## Установка и настройка
+
+### 1. Установка PostgreSQL и создание базы данных
+
+1. Установить PostgreSQL и pgAdmin: [Скачать PostgreSQL](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads).
+2. Создать базу данных через pgAdmin.
+3. Обновить файл `.env` следующими настройками:
+   ```plaintext
+   DATABASE_URL=postgresql://postgres:<PASSWORD>@localhost:5432/cookbook?schema=public
+   ```
+
+#### Параметры подключения к БД:
+
+- Name: cookbook
+- Host: localhost
+- Port: 5432
+- Username: postgres
+- Password: <PASSWORD>
+
+
+### 2. Установка зависимостей и запуск проекта
+
+1. Установить зависимости:
+   ```plaintext
+   yarn install
+   ```
+2. Инициализация проекта:
+
+	2.1.Выполнить миграцию:
+   ```plaintext
+	 npx prisma migrate dev --name init
+   ```
+	2.2. Сгенеририровать Prisma Client::
+   ```plaintext
+   npx prisma generate
+   ```
 ________________________________
-
-## Project setup
-
-```bash
-$ yarn install
-```
+________________________________
+________________________________
 
 ## Compile and run the project
 

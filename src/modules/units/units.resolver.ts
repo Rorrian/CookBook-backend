@@ -24,10 +24,10 @@ export class UnitsResolver {
     return this.unitsService.findOne(id);
   }
 
-  @Mutation(() => Unit)
-  updateUnit(@Args("updateUnitInput") updateUnitInput: UpdateUnitInput) {
-    return this.unitsService.update(updateUnitInput);
-  }
+	@Mutation(() => Unit)
+	updateUnit(@Args('updateUnitInput') updateUnitInput: UpdateUnitInput) {
+		return this.unitsService.update(updateUnitInput.id, updateUnitInput);
+	}
 
   @Mutation(() => Boolean)
   async removeUnit(@Args("id", { type: () => String }) id: string) {
