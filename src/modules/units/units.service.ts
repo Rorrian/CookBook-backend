@@ -14,17 +14,13 @@ export class UnitsService {
     });
   }
 
-	// TODO: отвязать единицы изменений от ингредиентов - они общие для всего приложения
   async findAll() {
-    return this.prisma.unit.findMany({
-      include: { ingredients: true },
-    });
+    return this.prisma.unit.findMany();
   }
 
   async findOne(id: string) {
     const unit = await this.prisma.unit.findUnique({
-      where: { id },
-      include: { ingredients: true },
+      where: { id }
     });
 
     if (!unit) throw new NotFoundException(`Unit with id ${id} not found`);
