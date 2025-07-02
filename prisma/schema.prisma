@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         				String  @id @default(cuid())
+  email      				String  @unique
+  name       				String?
+  password   				String
+  avatarPath 				String?
+
+  verificationToken String? @default(cuid()) @map("verification_token")
+
+	rights 	 					Role[] @default([USER])
+	
+  recipes  					Recipe[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Unit {
+  id   							String  @id @default(uuid())
+  name 							String
+  ingredients 			Ingredient[]
+}
+
+model Ingredient {
+  id         				String   @id @default(uuid())
+  name       				String
+  quantity   				Float
+  unit_id    				String
+  unit       				Unit     @relation(fields: [unit_id], references: [id])
+  recipe_id  				String
+  recipe     				Recipe   @relation(fields: [recipe_id], references: [id])
+}
+
+model Step {
+  id           			String   @id @default(uuid())
+  description  			String
+  step_number  			Int
+  recipe_id    			String
+  recipe       			Recipe   @relation(fields: [recipe_id], references: [id])
+}
+
+model Category {
+  id        				String   @id @default(uuid())
+  title     				String
+  image_url 				String?  // optional ?
+  recipes   				Recipe[]
+}
+
+model Recipe {
+  id               	String     @id @default(uuid())
+  title            	String
+  description      	String?    // optional
+  category_id      	String
+  category         	Category   @relation(fields: [category_id], references: [id])
+  image_url        	String?    // optional
+  complexity       	Int?       // optional
+  preparation_time 	String?    // optional
+  servings_count   	Int?       // optional
+
+  calories         	Float?     // macronutrients
+  proteins         	Float?
+  fats             	Float?
+  carbohydrates    	Float?
+	
+  user_id          	String
+  user             	User       @relation(fields: [user_id], references: [id])
+  ingredients      	Ingredient[]
+  steps            	Step[]
+}
