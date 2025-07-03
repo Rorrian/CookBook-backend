@@ -6,8 +6,9 @@ import { join } from "path";
 import { UnitsModule } from "./modules/units/units.module";
 import { StepsModule } from './modules/steps/steps.module';
 import { IngredientsModule } from "./modules/ingredients/ingredients.module";
-import { CategoriesModule } from './categories/categories.module';
-import { RecipesModule } from './recipes/recipes.module';
+import { CategoriesModule } from "./modules/categories/categories.module";
+import { RecipesModule } from "./modules/recipes/recipes.module";
+import { UsersModule } from "./modules/users/users.module";
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { RecipesModule } from './recipes/recipes.module';
     StepsModule,
     CategoriesModule,
     RecipesModule,
+    UsersModule,
   ],
 })
 export class AppModule {}
