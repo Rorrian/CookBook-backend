@@ -15,7 +15,17 @@ export class RecipesService {
   }
 
   findAll() {
-    return this.prisma.recipe.findMany();
+    return this.prisma.recipe.findMany({
+			include: {
+				category: true,
+				user: true,
+				ingredients: true,
+				steps: {
+					orderBy: { step_number: 'asc' },
+				},
+			},
+			orderBy: { title: 'desc' },
+		});
   }
 
   async findOne(id: string) {

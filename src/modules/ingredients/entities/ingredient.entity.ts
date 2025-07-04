@@ -14,10 +14,9 @@ export class Ingredient {
 
 	@Field()
   unit_id: string;
+	@Field(() => Unit, { nullable: true })
+  unit?: Unit;
 
   @Field()
   recipe_id: string;
-
-	@Field(() => Unit, { nullable: true })
-  unit?: Unit;
 }

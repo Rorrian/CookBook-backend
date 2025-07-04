@@ -1,0 +1,64 @@
+# Categories
+
+# # Создание
+# mutation {
+#   createCategory(createCategoryInput: {
+#     title: "Category 1",
+#     image_url: "",
+#   }) {
+#     id
+#     title
+#     image_url
+#     recipes {
+#       id
+#       title
+#     }
+#   }
+# }
+
+# # findAll
+# query {
+#   categories {
+#     id
+#     title
+#     image_url
+#     recipes {
+#       id
+#       title
+#     }
+#   }
+# }
+
+# # findOne
+# query {
+#   category(id: "080e2920-0f8b-40dd-8512-c9a7ffe34d36") {
+#     id
+#     title
+#     image_url
+#     recipes {
+#       id
+#       title
+#     }
+#   }
+# }
+
+# # Изменение
+# mutation {
+#   updateCategory(updateCategoryInput: {
+#     id: "080e2920-0f8b-40dd-8512-c9a7ffe34d36",
+#     title: "Category 1-1",
+#   }) {
+#     id
+#     title
+#     image_url
+#     recipes {
+#       id
+#       title
+#     }
+#   }
+# }
+
+# # Удаление
+# mutation {
+#   removeCategory(id: "7917632d-670a-4e32-be4c-402c407fcd5e")
+# }

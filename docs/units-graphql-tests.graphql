@@ -1,0 +1,61 @@
+# Units
+
+# TODO: Преобразовать в e2e тесты GraphQL
+
+# # Создание
+# mutation {
+#   createUnit(createUnitInput: {
+#     name: "Unit 1",
+#   }) {
+#     id
+#     name
+#     ingredients {
+#       id
+#       name
+#     }
+#   }
+# }
+
+# # findAll
+# query {
+#   units {
+#     id
+#     name
+#     ingredients {
+#       id
+#       name
+#     }
+#   }
+# }
+
+# # findOne
+# query {
+#   unit(id: "080e2920-0f8b-40dd-8512-c9a7ffe34d36") {
+#     id
+#     name
+#     ingredients {
+#       id
+#       name
+#     }
+#   }
+# }
+
+# # Изменение
+# mutation {
+#   updateUnit(updateUnitInput: {
+#     id: "080e2920-0f8b-40dd-8512-c9a7ffe34d36",
+#     name: "Unit 1-1",
+#   }) {
+#     id
+#     name
+#     ingredients {
+#       id
+#       name
+#     }
+#   }
+# }
+
+# # Удаление
+# mutation {
+#   removeUnit(id: "7917632d-670a-4e32-be4c-402c407fcd5e")
+# }

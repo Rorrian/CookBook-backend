@@ -1,0 +1,58 @@
+# Steps
+
+# # Создание
+# mutation {
+#   createStep(createStepInput: {
+#     description: "Step 1",
+#     step_number: 1,
+#     recipe_id: "9d20d71b-2408-4069-8a06-7859fa940865",
+#   }) {
+#     id
+#     description
+#     step_number
+#     recipe_id
+#   }
+# }
+
+# # findAll
+# query {
+#   stepsByRecipe(recipeId: "9d20d71b-2408-4069-8a06-7859fa940865") {
+#     id
+#     description
+#     step_number
+#     recipe_id
+#   }
+# }
+
+
+# # findOne
+# query {
+#   step(id: "080e2920-0f8b-40dd-8512-c9a7ffe34d36") {
+#     id
+#     description
+#     step_number
+#     recipe_id
+#   }
+# }
+
+
+# # Изменение
+# mutation {
+#   updateStep(updateStepInput: {
+#     id: "080e2920-0f8b-40dd-8512-c9a7ffe34d36",
+#     description: "Step 1-1",
+#     step_number: 2,
+#   }) {
+#     id
+#     description
+#     step_number
+#     recipe_id
+#   }
+# }
+
+
+
+# # Удаление
+# mutation {
+#   removeStep(id: "7917632d-670a-4e32-be4c-402c407fcd5e")
+# }

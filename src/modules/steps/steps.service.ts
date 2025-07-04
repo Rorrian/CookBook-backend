@@ -9,6 +9,34 @@ export class StepsService {
 	constructor(private readonly prisma: PrismaService) {}
 	
   async create(createStepInput: CreateStepInput) {
+		const recipeExists = await this.prisma.recipe.findUnique({
+			where: { id: createStepInput.recipe_id },
+		});
+
+		if(!recipeExists) {
+			throw new NotFoundException(`Recipe with id ${createStepInput.recipe_id} not found`);
+		}
+
+		const existingStep = await this.prisma.step.findFirst({
+			where: {
+				step_number: createStepInput.step_number,
+				recipe_id: createStepInput.recipe_id
+			},
+		});
+		if(existingStep) {
+			await this.prisma.step.updateMany({
+				where: {
+					recipe_id: createStepInput.recipe_id,
+					step_number: { gte: createStepInput.step_number	}
+				},
+					data: {
+						step_number: {
+							increment: 1,
+						}
+					},
+			})
+		}
+
     return this.prisma.step.create({
       data: createStepInput,
     });
@@ -40,9 +68,19 @@ export class StepsService {
 	}
 
   async remove(id: string) {
-    const existing = await this.findOne(id);
+    const existingStep = await this.findOne(id);
 
-    if (!existing) throw new NotFoundException(`Step with id ${id} not found`);
+    if (!existingStep) throw new NotFoundException(`Step with id ${id} not found`);
+
+		await this.prisma.step.updateMany({
+      where: {
+        recipe_id: existingStep.recipe_id,
+        step_number: { gt: existingStep.step_number },
+      },
+      data: {
+        step_number: { decrement: 1 },
+      },
+    });
     
 		return this.prisma.step.delete({ where: { id } });
   }

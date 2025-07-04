@@ -1,0 +1,156 @@
+# Recipes
+
+# # Создание
+# mutation {
+#   createRecipe(createRecipeInput: {
+#     title: "Recipe 1",
+#     description: "Recipe description 1",
+#     image_url: "",
+#     complexity: 1,
+#     preparation_time: "20 минут",
+#     servings_count: 4,
+#     calories: 100.10,
+#     proteins: 200.20,
+#     fats: 300.30,
+#     carbohydrates: 400.40,
+#     category_id: "080e2920-0f8b-40dd-8512-c9a7ffe34d36",
+#     user_id: "cmconl8710000rev46llh2yec",
+#   }) {
+#     id
+#     title
+#     description
+#     image_url
+#     complexity
+#     preparation_time
+#     servings_count
+#     calories
+#     proteins
+#     fats
+#     carbohydrates
+#     category_id
+#     user_id
+#     ingredients {
+#       id
+#       name
+#     }
+#     steps {
+#       id
+#       description
+#       step_number
+#     }
+#   }
+# }
+
+# # findAll
+# query {
+#   recipes {
+#     id
+#     title
+#     description
+#     image_url
+#     complexity
+#     preparation_time
+#     servings_count
+#     calories
+#     proteins
+#     fats
+#     carbohydrates
+#     category_id
+#     category {
+#       id
+#       title
+#     }
+#     user_id
+#     ingredients {
+#       id
+#       name
+#     	quantity
+#     	unit_id
+#     }
+#     steps {
+#       id
+#       description
+#       step_number
+#     }
+#   }
+# }
+
+# # findOne
+# query {
+#   recipe(id: "080e2920-0f8b-40dd-8512-c9a7ffe34d36") {
+#     id
+#     title
+#     description
+#     image_url
+#     complexity
+#     preparation_time
+#     servings_count
+#     calories
+#     proteins
+#     fats
+#     carbohydrates
+#     category_id
+#     category {
+#       id
+#       title
+#     }
+#     user_id
+#     ingredients {
+#       id
+#       name
+#     	quantity
+#     	unit_id
+#     }
+#     steps {
+#       id
+#       description
+#       step_number
+#     }
+#   }
+# }
+
+# # Изменение
+# mutation {
+#   updateRecipe(updateRecipeInput: {
+#     id: "9d20d71b-2408-4069-8a06-7859fa940865",
+#     title: "Recipe 1-1",
+#     description: "Recipe description 1-1",
+#     image_url: "1",
+#     complexity: 11,
+#     preparation_time: "120 минут",
+#     servings_count: 14,
+#     calories: 1100.1,
+#     proteins: 1200.2,
+#     fats: 1300.3,
+#     carbohydrates: 1400.4,
+#     category_id: "b29b10c1-8e72-4714-b13b-637db5080c53",
+#   }) {
+#     id
+#     title
+#     description
+#     image_url
+#     complexity
+#     preparation_time
+#     servings_count
+#     calories
+#     proteins
+#     fats
+#     carbohydrates
+#     category_id
+#     user_id
+#     ingredients {
+#       id
+#       name
+#     }
+#     steps {
+#       id
+#       description
+#       step_number
+#     }
+#   }
+# }
+
+# # Удаление
+# mutation {
+#   removeRecipe(id: "7917632d-670a-4e32-be4c-402c407fcd5e")
+# }

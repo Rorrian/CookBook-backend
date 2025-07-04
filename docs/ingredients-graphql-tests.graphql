@@ -1,0 +1,73 @@
+# Ingredients
+
+# # Создание
+# mutation {
+#   createIngredient(createIngredientInput: {
+#     name: "Ingredient 1",
+#     quantity: 1,
+#     unit_id: "080e2920-0f8b-40dd-8512-c9a7ffe34d36",
+#     recipe_id: "9d20d71b-2408-4069-8a06-7859fa940865",
+#   }) {
+#     id
+#     name
+#     quantity
+#     unit_id
+#     recipe_id
+#   }
+# }
+
+# # findAll
+# query {
+#   ingredients {
+#     id
+#     name
+#     quantity
+#     unit_id
+#     unit {
+#       id
+#       name
+#     }
+#     recipe_id
+#   }
+# }
+
+# # findOne
+# query {
+#   ingredient(id: "080e2920-0f8b-40dd-8512-c9a7ffe34d36") {
+#     id
+#     name
+#     quantity
+#     unit_id
+#     unit {
+#       id
+#       name
+#     }
+#     recipe_id
+#   }
+# }
+
+
+# # Изменение
+# mutation {
+#   updateIngredient(updateIngredientInput: {
+#     id: "080e2920-0f8b-40dd-8512-c9a7ffe34d36",
+#     name: "Ingredient 1-1",
+#     quantity: 2,
+#   }) {
+#     id
+#     name
+#     quantity
+#     unit_id
+#     unit {
+#       id
+#       name
+#     }
+#     recipe_id
+#   }
+# }
+
+
+# # Удаление
+# mutation {
+#   removeIngredient(id: "7917632d-670a-4e32-be4c-402c407fcd5e")
+# }
