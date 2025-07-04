@@ -8,17 +8,44 @@ datasource db {
 }
 
 model User {
-  id         				String  @id @default(cuid())
-  email      				String  @unique
-  name       				String?
-  password   				String
-  avatarPath 				String?
+  id         			   String  				@id @default(cuid())
+  email      			 	 String  				@unique
+  name       				 String?
+  password   				 String? 				// Из-за OAuth - опционально
+  avatarPath 				 String?
 
-  verificationToken String? @default(cuid()) @map("verification_token")
+	createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
 
-	rights 	 					Role[] @default([USER])
+	rights 	 					 Role[] 				@default([USER])
 	
-  recipes  					Recipe[]
+  recipes  					 Recipe[]
+
+	refreshTokens      RefreshToken[]
+  verificationTokens VerificationToken[]
+}
+
+model RefreshToken {
+  id         				 String  				@id @default(cuid())
+	token 						 String  				@unique
+	isRevoked 				 Boolean  			@default(false)
+
+	createdAt 				 DateTime 			@default(now())
+	expiresAt 				 DateTime
+
+	user_id    				 String
+	user       				 User    				@relation(fields: [user_id], references: [id])
+}
+
+model VerificationToken { //для восстановления аккаунта или верификации по email
+  id         				 String  				@id @default(cuid())
+	token 						 String  				@unique
+
+	createdAt 				 DateTime 			@default(now())
+	expiresAt 				 DateTime
+
+	user_id    				 String
+	user       				 User    				@relation(fields: [user_id], references: [id])
 }
 
 enum Role {
@@ -27,56 +54,56 @@ enum Role {
 }
 
 model Unit {
-  id   							String  @id @default(uuid())
-  name 							String
-  ingredients 			Ingredient[]
+  id   							 String  				@id @default(uuid())
+  name 							 String
+  ingredients 			 Ingredient[]
 }
 
 model Ingredient {
-  id         				String   @id @default(uuid())
-  name       				String
-  quantity   				Float
-  unit_id    				String
-  unit       				Unit     @relation(fields: [unit_id], references: [id])
-  recipe_id  				String
-  recipe     				Recipe   @relation(fields: [recipe_id], references: [id])
+  id         				 String   			@id @default(uuid())
+  name       				 String
+  quantity   				 Float
+  unit_id    				 String
+  unit       				 Unit     			@relation(fields: [unit_id], references: [id])
+  recipe_id  				 String
+  recipe     				 Recipe   			@relation(fields: [recipe_id], references: [id])
 }
 
 model Step {
-  id           			String   @id @default(uuid())
-  description  			String
-  step_number  			Int
-  recipe_id    			String
-  recipe       			Recipe   @relation(fields: [recipe_id], references: [id])
+  id           			 String   			@id @default(uuid())
+  description  			 String
+  step_number  			 Int
+  recipe_id    			 String
+  recipe       			 Recipe   			@relation(fields: [recipe_id], references: [id])
 }
 
 model Category {
-  id        				String   @id @default(uuid())
-  title     				String
-  image_url 				String?  // optional ?
-  recipes   				Recipe[]
+  id        				 String   			@id @default(uuid())
+  title     				 String
+  image_url 				 String?  			// optional ?
+  recipes   				 Recipe[]
 }
 
 model Recipe {
-  id               	String     @id @default(uuid())
-  title            	String
-  description      	String?    // optional
-  image_url        	String?    // optional
-  complexity       	Int?       // optional
-  preparation_time 	String?    // optional
-  servings_count   	Int?       // optional
+  id               	 String     		@id @default(uuid())
+  title            	 String
+  description        String?    		// optional
+  image_url        	 String?    		// optional
+  complexity       	 Int?       		// optional
+  preparation_time 	 String?    		// optional
+  servings_count   	 Int?       		// optional
 	
-	calories         	Float?     // macronutrients
-  proteins         	Float?
-  fats             	Float?
-  carbohydrates    	Float?
+	calories         	 Float?     		// macronutrients
+  proteins         	 Float?
+  fats             	 Float?
+  carbohydrates    	 Float?
 
-  category_id      	String
-  category         	Category   @relation(fields: [category_id], references: [id])
+  category_id      	 String
+  category         	 Category   		@relation(fields: [category_id], references: [id])
   
-  user_id          	String
-  user             	User       @relation(fields: [user_id], references: [id])
+  user_id          	 String
+  user             	 User       		@relation(fields: [user_id], references: [id])
   
-	ingredients      	Ingredient[]
-  steps            	Step[]
+	ingredients      	 Ingredient[]
+  steps            	 Step[]
 }

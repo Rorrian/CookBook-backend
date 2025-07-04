@@ -8,10 +8,11 @@
 
 ## Технологии:
 * NestJS
-* GraphQL(Apollo Driver)
+* GraphQL(Apollo Driver)(code-first)
 * Prisma (ORM)
 * TypeScript
 * PostgreSQL
+* Zod
 
 * OAuth
 

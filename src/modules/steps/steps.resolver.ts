@@ -1,4 +1,5 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+
 import { StepsService } from './steps.service';
 import { Step } from './entities/step.entity';
 import { CreateStepInput } from './dto/create-step.input';
@@ -14,12 +15,12 @@ export class StepsResolver {
   }
 
   @Query(() => [Step], { name: 'stepsByRecipe' })
-  findAllByRecipe(@Args("recipeId", { type: () => String }) recipeId: string) {
+  findAllByRecipe(@Args("recipeId", { type: () => ID }) recipeId: string) {
     return this.stepsService.findAllByRecipe(recipeId);
   }
 
   @Query(() => Step, { name: 'step' })
-  findOne(@Args('id', { type: () => String }) id: string) {
+  findOne(@Args('id', { type: () => ID }) id: string) {
     return this.stepsService.findOne(id);
   }
 
@@ -29,7 +30,7 @@ export class StepsResolver {
   }
 
   @Mutation(() => Boolean)	
-  async removeStep(@Args("id", { type: () => String }) id: string) {
+  async removeStep(@Args("id", { type: () => ID }) id: string) {
     await this.stepsService.remove(id);
     return true;
   }

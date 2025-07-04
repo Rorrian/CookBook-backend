@@ -18,9 +18,14 @@
     "skipLibCheck": true,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
+		// "strict": true,
     "noImplicitAny": false,
+    // "noImplicitAny": true,
+		// "strictFunctionTypes": true,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
+		// "noImplicitThis": true,
+    // "alwaysStrict": true,
 		"jsx": "react"
   }
 }

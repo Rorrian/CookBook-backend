@@ -1,0 +1,205 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input AuthDto {
+  email: String!
+  password: String!
+}
+
+type AuthResponse {
+  accessToken: String!
+  refreshToken: String!
+}
+
+type Category {
+  id: ID!
+  image_url: String
+  recipes: [Recipe]
+  title: String!
+}
+
+input CreateCategoryInput {
+  image_url: String
+  title: String!
+}
+
+input CreateIngredientInput {
+  name: String!
+  quantity: Float!
+  recipe_id: String!
+  unit_id: String!
+}
+
+input CreateRecipeInput {
+  calories: Float
+  carbohydrates: Float
+  category_id: String!
+  complexity: Int
+  description: String
+  fats: Float
+  image_url: String
+  preparation_time: String
+  proteins: Float
+  servings_count: Int
+  title: String!
+  user_id: String!
+}
+
+input CreateStepInput {
+  description: String!
+  recipe_id: String!
+  step_number: Int!
+}
+
+input CreateUnitInput {
+  name: String!
+}
+
+type Ingredient {
+  id: ID!
+  name: String!
+  quantity: Float!
+  recipe_id: String!
+  unit: Unit
+  unit_id: String!
+}
+
+type Mutation {
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  createIngredient(createIngredientInput: CreateIngredientInput!): Ingredient!
+  createRecipe(createRecipeInput: CreateRecipeInput!): Recipe!
+  createStep(createStepInput: CreateStepInput!): Step!
+  createUnit(createUnitInput: CreateUnitInput!): Unit!
+  login(input: AuthDto!): AuthResponse!
+  logout(refreshToken: String!): String!
+  refreshToken(input: RefreshTokenDto!): AuthResponse!
+  register(input: AuthDto!): AuthResponse!
+  removeCategory(id: ID!): Boolean!
+  removeIngredient(id: ID!): Boolean!
+  removeRecipe(id: ID!): Boolean!
+  removeStep(id: ID!): Boolean!
+  removeUnit(id: ID!): Boolean!
+  removeUser(id: ID!): User!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  updateIngredient(updateIngredientInput: UpdateIngredientInput!): Ingredient!
+  updateRecipe(updateRecipeInput: UpdateRecipeInput!): Recipe!
+  updateStep(updateStepInput: UpdateStepInput!): Step!
+  updateUnit(updateUnitInput: UpdateUnitInput!): Unit!
+  updateUser(id: ID!, updateUserInput: UpdateUserInput!): User!
+}
+
+type Query {
+  categories: [Category!]!
+  category(id: ID!): Category!
+  ingredient(id: ID!): Ingredient!
+  ingredients: [Ingredient!]!
+  recipe(id: ID!): Recipe!
+  recipes: [Recipe!]!
+  step(id: ID!): Step!
+  stepsByRecipe(recipeId: ID!): [Step!]!
+  unit(id: ID!): Unit!
+  units: [Unit!]!
+  userByEmail(email: String!): User!
+  userByID(id: ID!): User!
+  users: [User!]!
+}
+
+type Recipe {
+  calories: Float
+  carbohydrates: Float
+  category: Category!
+  category_id: String!
+  complexity: Int
+  description: String
+  fats: Float
+  id: ID!
+  image_url: String
+  ingredients: [Ingredient]
+  preparation_time: String
+  proteins: Float
+  servings_count: Int
+  steps: [Step]
+  title: String!
+  user: User!
+  user_id: String!
+}
+
+input RefreshTokenDto {
+  refreshToken: String!
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+type Step {
+  description: String!
+  id: ID!
+  recipe: Recipe!
+  recipe_id: String!
+  step_number: Int!
+}
+
+type Unit {
+  id: ID!
+  ingredients: [Ingredient!]
+  name: String!
+}
+
+input UpdateCategoryInput {
+  id: ID!
+  image_url: String
+  title: String
+}
+
+input UpdateIngredientInput {
+  id: ID!
+  name: String
+  quantity: Float
+  recipe_id: String
+  unit_id: String
+}
+
+input UpdateRecipeInput {
+  calories: Float
+  carbohydrates: Float
+  category_id: String
+  complexity: Int
+  description: String
+  fats: Float
+  id: ID!
+  image_url: String
+  preparation_time: String
+  proteins: Float
+  servings_count: Int
+  title: String
+  user_id: String
+}
+
+input UpdateStepInput {
+  description: String
+  id: ID!
+  recipe_id: String
+  step_number: Int
+}
+
+input UpdateUnitInput {
+  id: ID!
+  name: String
+}
+
+input UpdateUserInput {
+  email: String
+  password: String
+}
+
+type User {
+  avatarPath: String
+  email: String!
+  id: ID!
+  name: String
+  recipes: [Recipe]
+  rights: [Role!]!
+}

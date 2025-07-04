@@ -1,7 +1,7 @@
-import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+
 import { IngredientsService } from './ingredients.service';
 import { Ingredient } from './entities/ingredient.entity';
-
 import { CreateIngredientInput } from './dto/create-ingredient.input';
 import { UpdateIngredientInput } from './dto/update-ingredient.input';
 
@@ -20,7 +20,7 @@ export class IngredientsResolver {
   }
 
 	@Query(() => Ingredient, { name: "ingredient" })
-  findOne(@Args("id", { type: () => String }) id: string) {
+  findOne(@Args("id", { type: () => ID }) id: string) {
     return this.ingredientsService.findOne(id);
   }
 
@@ -30,14 +30,14 @@ export class IngredientsResolver {
   }
 
   @Mutation(() => Boolean)
-  async removeIngredient(@Args('id', { type: () => String }) id: string) {
+  async removeIngredient(@Args('id', { type: () => ID }) id: string) {
 		await this.ingredientsService.remove(id);
     return true;
   }
 
   // Вычисляемое поле unit_name через связанный unit
-  @ResolveField(() => String, { nullable: true })
-  unit_name(@Parent() ingredient: Ingredient) {
-    return ingredient.unit?.name ?? null;
-  }
+  // @ResolveField(() => String, { nullable: true })
+  // unit_name(@Parent() ingredient: Ingredient) {
+  //   return ingredient.unit?.name ?? null;
+  // }
 }

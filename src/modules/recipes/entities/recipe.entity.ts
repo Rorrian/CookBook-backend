@@ -2,9 +2,9 @@ import { ObjectType, Field, ID, Int, Float } from '@nestjs/graphql';
 import { IsInt, IsOptional, IsUrl } from 'class-validator';
 
 import { Category } from '@/modules/categories/entities/category.entity';
-import { User } from '@/modules/users/entities/users.entity';
 import { Ingredient } from '@/modules/ingredients/entities/ingredient.entity';
 import { Step } from '@/modules/steps/entities/step.entity';
+import { User } from '@/modules/users/entities/user.entity';
 
 @ObjectType()
 export class Recipe {

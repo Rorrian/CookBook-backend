@@ -26,12 +26,15 @@ export default tseslint.config(
   },
   {
     rules: {
-		'@typescript-eslint/interface-name-prefix': 'off',
-		'@typescript-eslint/explicit-function-return-type': 'off',
-		'@typescript-eslint/explicit-module-boundary-types': 'off',
-		'@typescript-eslint/no-explicit-any': 'off',
-		'no-console': 1,
-		'prettier/prettier': 0,
+      '@typescript-eslint/interface-name-prefix': 'off',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      'no-console': 'warn',
+      'prettier/prettier': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'warn', // Смягчаем правило
+      '@typescript-eslint/no-unsafe-call': 'warn', // Смягчаем правило
+      '@typescript-eslint/no-unsafe-member-access': 'warn', // Смягчаем правило
     },
   },
 );

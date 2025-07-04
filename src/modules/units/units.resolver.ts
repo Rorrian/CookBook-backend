@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args } from "@nestjs/graphql";
+import { Resolver, Query, Mutation, Args, ID } from "@nestjs/graphql";
 
 import { UnitsService } from "./units.service";
 import { Unit } from "./entities/unit.entity";
@@ -20,7 +20,7 @@ export class UnitsResolver {
   }
 
   @Query(() => Unit, { name: "unit" })
-  findOne(@Args("id", { type: () => String }) id: string) {
+  findOne(@Args("id", { type: () => ID }) id: string) {
     return this.unitsService.findOne(id);
   }
 
@@ -30,7 +30,7 @@ export class UnitsResolver {
 	}
 
   @Mutation(() => Boolean)
-  async removeUnit(@Args("id", { type: () => String }) id: string) {
+  async removeUnit(@Args("id", { type: () => ID }) id: string) {
     await this.unitsService.remove(id);
     return true;
   }

@@ -1,4 +1,5 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+
 import { RecipesService } from './recipes.service';
 import { Recipe } from './entities/recipe.entity';
 import { CreateRecipeInput } from './dto/create-recipe.input';
@@ -19,7 +20,7 @@ export class RecipesResolver {
   }
 
   @Query(() => Recipe, { name: 'recipe' })
-  findOne(@Args('id', { type: () => Int }) id: string) {
+  findOne(@Args('id', { type: () => ID }) id: string) {
     return this.recipesService.findOne(id);
   }
 
@@ -29,7 +30,7 @@ export class RecipesResolver {
   }
 
   @Mutation(() => Boolean)
-  async removeRecipe(@Args('id', { type: () => String }) id: string) {
+  async removeRecipe(@Args('id', { type: () => ID }) id: string) {
     await this.recipesService.remove(id);
     return true;
   }

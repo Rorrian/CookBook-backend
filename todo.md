@@ -10,11 +10,11 @@
 	- [x] - Recipes
 
 # Регистрация/авторизация
-- [ ] - Написать DTO/Entities:
-	- [ ] - Users
+- [x] - Написать DTO/Entities:
+	- [x] - Users
 - [ ] - Регистрация/Авторизация
-	- [ ] - По email и паролю
-		- [ ] - JWT (access / refresh)
+	- [x] - По email и паролю
+		- [x] - JWT (access / refresh)
 		- [ ] - GoogleRecaptcha
 	- [ ] OAuth:
 		- [ ] - Через Google
