@@ -75,7 +75,7 @@ type Mutation {
   logout(refreshToken: String!): String!
   refreshToken(input: RefreshTokenDto!): AuthResponse!
   register(input: AuthDto!): AuthResponse!
-  removeCategory(id: ID!): Boolean!
+  removeCategory(id: ID!, isCascade: Boolean): Boolean!
   removeIngredient(id: ID!): Boolean!
   removeRecipe(id: ID!): Boolean!
   removeStep(id: ID!): Boolean!

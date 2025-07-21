@@ -41,9 +41,12 @@ export class UsersService {
 
   async remove(id: string) {
     const existing = await this.findOne(id);
-
     if (!existing) throw new NotFoundException(`User with id ${id} not found`);
     
+		await this.prisma.refreshToken.deleteMany({ where: { user_id: id } });
+		await this.prisma.verificationToken.deleteMany({ where: { user_id: id } });
+		await this.prisma.recipe.deleteMany({ where: { user_id: id } });
+
 		return this.prisma.user.delete({ where: { id } });
   }
 }

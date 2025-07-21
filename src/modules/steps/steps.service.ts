@@ -69,7 +69,6 @@ export class StepsService {
 
   async remove(id: string) {
     const existingStep = await this.findOne(id);
-
     if (!existingStep) throw new NotFoundException(`Step with id ${id} not found`);
 
 		await this.prisma.step.updateMany({

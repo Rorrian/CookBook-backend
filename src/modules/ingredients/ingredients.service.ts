@@ -40,7 +40,6 @@ export class IngredientsService {
 
   async remove(id: string) {
     const existing = await this.findOne(id);
-
     if (!existing) throw new NotFoundException(`Ingredient with id ${id} not found`);
     
 		return this.prisma.ingredient.delete({ where: { id } });

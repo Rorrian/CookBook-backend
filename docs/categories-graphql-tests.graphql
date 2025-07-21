@@ -62,3 +62,11 @@
 # mutation {
 #   removeCategory(id: "7917632d-670a-4e32-be4c-402c407fcd5e")
 # }
+
+# mutation {
+#   removeCategory(
+#     id: "e562161a-23d6-429d-b461-0961279cbb5c",
+#   isCascade: true
+#   )
+# }
+

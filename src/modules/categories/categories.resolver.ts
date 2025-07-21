@@ -30,8 +30,11 @@ export class CategoriesResolver {
   }
 
   @Mutation(() => Boolean)
-  async removeCategory(@Args('id', { type: () => ID }) id: string) {
-    await this.categoriesService.remove(id);
+  async removeCategory(
+		@Args('id', { type: () => ID }) id: string,
+		@Args('isCascade', { type: () => Boolean, nullable: true }) isCascade?: boolean,
+	) {
+    await this.categoriesService.remove(id, isCascade);
     return true;
   }
 }

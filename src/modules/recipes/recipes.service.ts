@@ -56,9 +56,11 @@ export class RecipesService {
 
   async remove(id: string) {
     const existing = await this.findOne(id);
-
     if (!existing) throw new NotFoundException(`Recipe with id ${id} not found`);
     
+		await this.prisma.ingredient.deleteMany({ where: { recipe_id: id } });
+		await this.prisma.step.deleteMany({ where: { recipe_id: id  } });
+		
 		return this.prisma.recipe.delete({ where: { id } });
   }
 }

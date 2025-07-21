@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 
 import { PrismaService } from "prisma/prisma.service";
 import { CreateUnitInput } from "./dto/create-unit.input";
@@ -38,9 +38,11 @@ export class UnitsService {
 
 	async remove(id: string) {
     const existing = await this.findOne(id);
-
     if (!existing) throw new NotFoundException(`Unit with id ${id} not found`);
-    
+
+		const count = await this.prisma.ingredient.count({ where: { unit_id: id } });
+		if (count > 0) throw new BadRequestException('Cannot delete unit with linked ingredients');
+				
 		return this.prisma.unit.delete({ where: { id } });
   }
 }
