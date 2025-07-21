@@ -52,7 +52,7 @@ export class CreateRecipeInput {
 	@IsNotEmpty()
 	category_id: string;
 
-	@Field()
-	@IsNotEmpty()
-	user_id: string;
+	// @Field()
+	// @IsNotEmpty()
+	// user_id: string;
 }

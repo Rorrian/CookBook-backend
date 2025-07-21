@@ -43,7 +43,6 @@ input CreateRecipeInput {
   proteins: Float
   servings_count: Int
   title: String!
-  user_id: String!
 }
 
 input CreateStepInput {
@@ -86,14 +85,14 @@ type Mutation {
   updateRecipe(updateRecipeInput: UpdateRecipeInput!): Recipe!
   updateStep(updateStepInput: UpdateStepInput!): Step!
   updateUnit(updateUnitInput: UpdateUnitInput!): Unit!
-  updateUser(id: ID!, updateUserInput: UpdateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
 }
 
 type Query {
   categories: [Category!]!
   category(id: ID!): Category!
   ingredient(id: ID!): Ingredient!
-  ingredients: [Ingredient!]!
+  ingredientsByRecipe(recipeId: ID!): [Ingredient!]!
   recipe(id: ID!): Recipe!
   recipes: [Recipe!]!
   step(id: ID!): Step!
@@ -175,7 +174,6 @@ input UpdateRecipeInput {
   proteins: Float
   servings_count: Int
   title: String
-  user_id: String
 }
 
 input UpdateStepInput {

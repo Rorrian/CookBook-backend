@@ -1,21 +1,32 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from 'prisma/prisma.service';
 
+import { CurrentUserType } from '@/auth/types/current-user.type';
 import { CreateStepInput } from './dto/create-step.input';
 import { UpdateStepInput } from './dto/update-step.input';
-import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class StepsService {
 	constructor(private readonly prisma: PrismaService) {}
-	
-  async create(createStepInput: CreateStepInput) {
-		const recipeExists = await this.prisma.recipe.findUnique({
-			where: { id: createStepInput.recipe_id },
-		});
 
-		if(!recipeExists) {
-			throw new NotFoundException(`Recipe with id ${createStepInput.recipe_id} not found`);
+	// FIXME: вынести т.к. повторяется тут  и в ингредиентах, в рецептах
+	private async checkAccess(
+		recipeId: string,
+		user: CurrentUserType,
+	) {
+		const recipe = await this.prisma.recipe.findUnique({ where: { id: recipeId } });
+		if (!recipe) throw new NotFoundException(`Recipe with id ${recipeId} not found`);
+
+		if (recipe.user_id !== user.userId) {
+			throw new ForbiddenException('Access denied');
 		}
+  }
+	
+  async create(
+		createStepInput: CreateStepInput,
+		user: CurrentUserType,
+	) {
+		await this.checkAccess(createStepInput.recipe_id, user);
 
 		const existingStep = await this.prisma.step.findFirst({
 			where: {
@@ -42,35 +53,48 @@ export class StepsService {
     });
   }
 
-  async findAllByRecipe(recipeId: string) {
+  async findAllByRecipe(
+		recipeId: string,
+		user: CurrentUserType,
+	) {
+		await this.checkAccess(recipeId, user);
+
     return this.prisma.step.findMany({
 			where: { recipe_id: recipeId },
 			orderBy: { step_number: 'asc' },
     });
   }
 
-  async findOne(id: string) {
-			const step = await this.prisma.step.findUnique({
-				where: { id },
-			});
-	
-			if (!step) throw new NotFoundException(`Step with id ${id} not found`);
-	
-			return step;
+  async findOne(
+		id: string,
+		user: CurrentUserType,
+	) {
+		const step = await this.prisma.step.findUnique({
+			where: { id },
+		});
+		if (!step) throw new NotFoundException(`Step with id ${id} not found`);
+
+		await this.checkAccess(step.recipe_id, user);
+
+		return step;
   }
 
-  async update(id: string, updateStepInput: UpdateStepInput) {
-		const existing = await this.findOne(id);
-		
-		if (!existing) throw new NotFoundException(`Step with id ${id} not found`);
+  async update(
+		id: string,
+		updateStepInput: UpdateStepInput,
+		user: CurrentUserType,
+	) {
+		await this.findOne(id, user);
 		
 		return this.prisma.step.update({ where: { id }, data: updateStepInput });
 	}
 
-  async remove(id: string) {
-    const existingStep = await this.findOne(id);
-    if (!existingStep) throw new NotFoundException(`Step with id ${id} not found`);
-
+  async remove(
+		id: string,
+		user: CurrentUserType,
+	) {
+    const existingStep = await this.findOne(id, user);
+    
 		await this.prisma.step.updateMany({
       where: {
         recipe_id: existingStep.recipe_id,

@@ -37,7 +37,6 @@
 # # Изменение
 # mutation {
 #   updateUser(
-#     id: "cmconl8710000rev46llh2yec",
 #     updateUserInput: {
 #     	name: "User 1",
 #   }) {

@@ -1,21 +1,38 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from 'prisma/prisma.service';
 
+import { CurrentUserType } from '@/auth/types/current-user.type';
 import { CreateRecipeInput } from './dto/create-recipe.input';
 import { UpdateRecipeInput } from './dto/update-recipe.input';
-import { PrismaService } from 'prisma/prisma.service';
 
 @Injectable()
 export class RecipesService {
 	constructor(private readonly prisma: PrismaService) {}
-	
-  create(createRecipeInput: CreateRecipeInput) {
+
+  private async checkAccess(recipeId: string, user: CurrentUserType) {
+		const recipe = await this.prisma.recipe.findUnique({ where: { id: recipeId } });
+    if (!recipe) throw new NotFoundException(`Recipe with id ${recipeId} not found`);
+    
+		if (recipe.user_id !== user.userId) throw new ForbiddenException('Access denied');
+  }
+
+  async create(
+		createRecipeInput: CreateRecipeInput,
+		user: CurrentUserType,
+	) {
     return this.prisma.recipe.create({
-      data: createRecipeInput,
+      data: {
+				...createRecipeInput,
+				user_id: user.userId,
+			},
     });
   }
 
-  findAll() {
+  async findAll(user: CurrentUserType) {
+		const isAdmin = user.role === 'ADMIN';
+
     return this.prisma.recipe.findMany({
+			where: isAdmin ? {} : { user_id: user.userId },
 			include: {
 				category: true,
 				user: true,
@@ -28,36 +45,46 @@ export class RecipesService {
 		});
   }
 
-  async findOne(id: string) {
-			const recipe = await this.prisma.recipe.findUnique({
-				where: { id },
-				include: {
-					category: true,
-					user: true,
-					ingredients: true,
-					steps: {
-						orderBy: { step_number: 'asc' },
-					},
+  async findOne(
+		id: string,
+		user: CurrentUserType,
+	) {
+		const recipe = await this.prisma.recipe.findUnique({
+			where: { id },
+			include: {
+				category: true,
+				user: true,
+				ingredients: true,
+				steps: {
+					orderBy: { step_number: 'asc' },
 				},
-			});
-	
-			if (!recipe) throw new NotFoundException(`Recipe with id ${id} not found`);
-			
-			return recipe;
+			},
+		});
+		if (!recipe) throw new NotFoundException(`Recipe with id ${id} not found`);
+		
+		if (recipe.user_id !== user.userId) {
+			throw new ForbiddenException('Access denied');
+		}
+		
+		return recipe;
   }
 
-  async update(id: string, updateRecipeInput: UpdateRecipeInput) {
-		const existing = await this.findOne(id);
-
-		if (!existing) throw new NotFoundException(`Recipe with id ${id} not found`);
+  async update(
+		id: string,
+		updateRecipeInput: UpdateRecipeInput,
+		user: CurrentUserType,
+	) {
+		await this.checkAccess(id, user);
 		
 		return this.prisma.recipe.update({ where: { id }, data: updateRecipeInput });
 	}
 
-  async remove(id: string) {
-    const existing = await this.findOne(id);
-    if (!existing) throw new NotFoundException(`Recipe with id ${id} not found`);
-    
+  async remove(
+		id: string,
+		user: CurrentUserType,
+	) {
+		await this.checkAccess(id, user);
+
 		await this.prisma.ingredient.deleteMany({ where: { recipe_id: id } });
 		await this.prisma.step.deleteMany({ where: { recipe_id: id  } });
 		
