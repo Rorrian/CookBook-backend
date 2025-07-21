@@ -1,7 +1,8 @@
 import { Resolver, Query, Mutation, Args, ID } from "@nestjs/graphql";
 import { UseGuards } from "@nestjs/common";
 
-import { JwtAuthGuard } from "@/auth/guards/jwt-auth.guard";
+import { Roles } from "@/auth/decorators/roles.decorator";
+import { JwtAuthGuard } from "@/auth/guards/jwt.guard";
 import { UnitsService } from "./units.service";
 import { Unit } from "./entities/unit.entity";
 import { CreateUnitInput } from "./dto/create-unit.input";
@@ -13,7 +14,7 @@ export class UnitsResolver {
   constructor(private readonly unitsService: UnitsService) {}
 
   @Mutation(() => Unit)
-	// @Roles('ADMIN')
+	@Roles('ADMIN')
   createUnit(@Args("createUnitInput") createUnitInput: CreateUnitInput) {
     return this.unitsService.create(createUnitInput);
   }
@@ -29,13 +30,13 @@ export class UnitsResolver {
   }
 
 	@Mutation(() => Unit)
-	// @Roles('ADMIN')
+	@Roles('ADMIN')
 	updateUnit(@Args('updateUnitInput') updateUnitInput: UpdateUnitInput) {
 		return this.unitsService.update(updateUnitInput.id, updateUnitInput);
 	}
 
   @Mutation(() => Boolean)
-	// @Roles('ADMIN')
+	@Roles('ADMIN')
   async removeUnit(@Args("id", { type: () => ID }) id: string) {
     await this.unitsService.remove(id);
     return true;

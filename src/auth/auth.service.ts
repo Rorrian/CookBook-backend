@@ -12,8 +12,8 @@ import { AuthDto } from './dto/auth.dto';
 @Injectable()
 export class AuthService {
   constructor(
-    private prisma: PrismaService,
     private jwtService: JwtService,
+    private prisma: PrismaService,
     private configService: ConfigService<AppConfig>,
   ) {}
 
@@ -30,13 +30,23 @@ export class AuthService {
       data: {
         email: dto.email,
         password: hashedPassword,
+        rights: ['USER'], // Дефолтная роль
       },
     });
-
-    const accessToken = this.jwtService.sign({ sub: user.id, email: user.email });
+    const accessToken = this.jwtService.sign({
+			sub: user.id,
+			email: user.email,
+			rights: user.rights,
+		});
     const refreshToken = this.jwtService.sign(
-      { sub: user.id, email: user.email },
-      { expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRES_IN') },
+      {
+				sub: user.id,
+				email: user.email,
+				rights: user.rights,
+			},
+      {
+				expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRES_IN'),
+			},
     );
 
     const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
@@ -64,10 +74,20 @@ export class AuthService {
       throw new BadRequestException('Invalid credentials');
     }
 
-    const accessToken = this.jwtService.sign({ sub: user.id, email: user.email });
+    const accessToken = this.jwtService.sign({
+			sub: user.id,
+			email: user.email,
+			rights: user.rights,
+		});
     const refreshToken = this.jwtService.sign(
-      { sub: user.id, email: user.email },
-      { expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRES_IN') },
+      {
+				sub: user.id,
+				email: user.email,
+				rights: user.rights,
+			},
+      {
+				expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRES_IN'),
+			},
     );
 
     const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
@@ -160,14 +180,31 @@ export class AuthService {
     }
 
     // --- Новые токены --- 
-    const accessToken = this.jwtService.sign({ sub: payload.sub, email: payload.email });
+    // Получаем пользователя с правами
+    const user = await this.prisma.user.findUnique({
+			where: {
+				id: payload.sub
+			}
+		});
+		if (!user) throw new UnauthorizedException('User not found');
+
+    const accessToken = this.jwtService.sign({
+			sub: payload.sub,
+			email: payload.email,
+			rights: user.rights,
+		});
     const newRefreshToken = this.jwtService.sign(
-      { sub: payload.sub, email: payload.email },
-      { expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRES_IN') },
+      {
+				sub: payload.sub,
+				email: payload.email,
+				rights: user.rights,
+			},
+      {
+				expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRES_IN') },
     );
     const hashedNewRefreshToken = await bcrypt.hash(newRefreshToken, 10);
 
-    const result = await this.prisma.$transaction([
+    await this.prisma.$transaction([
       this.prisma.refreshToken.update({
         where: { id: refreshTokenRecord.id },
         data: { isRevoked: true },

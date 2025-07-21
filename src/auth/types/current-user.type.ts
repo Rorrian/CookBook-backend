@@ -1,4 +1,5 @@
 export type CurrentUserType = {
   userId: string;
-  role: string;
+  email: string;
+  rights: string[];
 }

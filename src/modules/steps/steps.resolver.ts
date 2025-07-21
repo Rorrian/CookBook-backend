@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 
-import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '@/auth/guards/jwt.guard';
 import { CurrentUser } from '@/auth/decorators/current-user.decorator';
 import { CurrentUserType } from '@/auth/types/current-user.type';
 import { StepsService } from './steps.service';

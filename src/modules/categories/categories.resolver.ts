@@ -1,7 +1,8 @@
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 
-import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { Roles } from '@/auth/decorators/roles.decorator';
+import { JwtAuthGuard } from '@/auth/guards/jwt.guard';
 import { CategoriesService } from './categories.service';
 import { Category } from './entities/category.entity';
 import { CreateCategoryInput } from './dto/create-category.input';
@@ -13,7 +14,7 @@ export class CategoriesResolver {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Mutation(() => Category)
-	// @Roles('ADMIN')
+	@Roles('ADMIN')
   createCategory(@Args('createCategoryInput') createCategoryInput: CreateCategoryInput) {
     return this.categoriesService.create(createCategoryInput);
   }
@@ -29,13 +30,13 @@ export class CategoriesResolver {
   }
 
   @Mutation(() => Category)
-	// @Roles('ADMIN')
+	@Roles('ADMIN')
   updateCategory(@Args('updateCategoryInput') updateCategoryInput: UpdateCategoryInput) {
     return this.categoriesService.update(updateCategoryInput.id, updateCategoryInput);
   }
 
   @Mutation(() => Boolean)
-	// @Roles('ADMIN')
+	@Roles('ADMIN')
   async removeCategory(
 		@Args('id', { type: () => ID }) id: string,
 		@Args('isCascade', { type: () => Boolean, nullable: true }) isCascade?: boolean,

@@ -29,7 +29,8 @@ export class RecipesService {
   }
 
   async findAll(user: CurrentUserType) {
-		const isAdmin = user.role === 'ADMIN';
+		// const isAdmin = Array.isArray(user.role) ? user.role.includes('ADMIN') : user.role === 'ADMIN';
+		const isAdmin = true;
 
     return this.prisma.recipe.findMany({
 			where: isAdmin ? {} : { user_id: user.userId },
