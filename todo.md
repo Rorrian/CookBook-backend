@@ -10,8 +10,7 @@
 	- [x] - Recipes
 
 # Регистрация/авторизация
-- [x] - Написать DTO/Entities:
-	- [x] - Users
+- [x] - Написать DTO/Entities - Users
 - [ ] - Регистрация/Авторизация
 	- [x] - По email и паролю
 		- [x] - JWT (access / refresh)

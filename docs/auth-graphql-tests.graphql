@@ -1,0 +1,35 @@
+# Auth - http://localhost:4200/graphql
+
+# mutation {
+#   register(input: {
+#     email: "user@example.com",
+#     password: "password",
+#   }) {
+#     accessToken
+#     refreshToken
+#   }
+# }
+
+# mutation {
+#   login(input: {
+#     email: "user@example.com",
+#     password: "password",
+#   }) {
+#     accessToken
+#     refreshToken
+#   }
+# }
+
+# mutation {
+#   refreshToken(input: {
+#     refreshToken: "your-refresh-token-here",
+#   }) {
+#     accessToken
+#     refreshToken
+#   }
+# }
+
+# mutation {
+#   logout(refreshToken: "your-refresh-token-here")
+# }
+

@@ -1,0 +1,55 @@
+# Users
+
+# # findAll
+# query {
+#   users {
+#     id
+#     email
+#     name
+#     avatarPath
+#     rights
+#   }
+# }
+
+# # findOne - ByID
+# query {
+#   userByID(id: "cmconl8710000rev46llh2yec") {
+#     id
+#     email
+#     name
+#     avatarPath
+#     rights
+#   }
+# }
+
+# # findOne - Email
+# query {
+#   userByEmail(email: "test@example.com") {
+#     id
+#     email
+#     name
+#     avatarPath
+#     rights
+#   }
+# }
+
+
+# # Изменение
+# mutation {
+#   updateUser(
+#     id: "cmconl8710000rev46llh2yec",
+#     updateUserInput: {
+#     	name: "User 1",
+#   }) {
+#     id
+#     email
+#     name
+#     avatarPath
+#     rights
+#   }
+# }
+
+# # Удаление
+# mutation {
+#   removeUser(id: "cmdcw63w80000reicwtueqzie")
+# }

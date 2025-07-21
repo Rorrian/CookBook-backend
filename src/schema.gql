@@ -80,7 +80,7 @@ type Mutation {
   removeRecipe(id: ID!): Boolean!
   removeStep(id: ID!): Boolean!
   removeUnit(id: ID!): Boolean!
-  removeUser(id: ID!): User!
+  removeUser(id: ID!): Boolean!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
   updateIngredient(updateIngredientInput: UpdateIngredientInput!): Ingredient!
   updateRecipe(updateRecipeInput: UpdateRecipeInput!): Recipe!
@@ -191,7 +191,9 @@ input UpdateUnitInput {
 }
 
 input UpdateUserInput {
+  avatarPath: String
   email: String
+  name: String
   password: String
 }
 
